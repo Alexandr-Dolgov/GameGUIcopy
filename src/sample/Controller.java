@@ -13,7 +13,6 @@ public class Controller {
     private Main main;
     private ArrayList<Man> mans;
     private int number;
-    private String path = "phantom";
     @FXML
     private TextField nameTextField;
     @FXML

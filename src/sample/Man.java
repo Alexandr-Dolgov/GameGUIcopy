@@ -4,6 +4,7 @@ import java.io.*;
 
 /**
  * Created by ankovol on 26.02.2015.
+ * Changed by Alexandr-Dplgov
  */
 public class Man implements Serializable{
     //поля класса
@@ -32,26 +33,17 @@ public class Man implements Serializable{
     }
 
     public void save (String path){
-        FileOutputStream fos = null;
-        try{
-            fos = new FileOutputStream(path);
+        try(FileOutputStream fos = new FileOutputStream(path);
+            ObjectOutputStream oos = new ObjectOutputStream(fos)
+        ){
+            oos.writeObject(this);
         }catch (FileNotFoundException ex){
             System.out.println("File not found");
-        }
-        ObjectOutputStream oos = null;
-        try{
-            oos = new ObjectOutputStream(fos);
-            oos.writeObject(this);
-            oos.close();
-        } catch (IOException ex) {
-            System.out.println("Error");
-        }
-        try {
-            fos.close();
         }catch (IOException ex) {
             System.out.println("Error");
         }
     }
+
     public static Man load (String path) {
         FileInputStream fis = null;
         try {

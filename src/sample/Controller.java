@@ -114,13 +114,20 @@ public class Controller {
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showOpenDialog(main.getPrimaryStage());
 
-        Man man = Man.load(file.getAbsolutePath());
-        mans.set(number, man);
-        showMan(number);
+        try(FileInputStream fis = new FileInputStream(file.getAbsolutePath());
+            ObjectInputStream ois = new ObjectInputStream(fis)
+        ) {
+            mans = (ArrayList<Man>) ois.readObject();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        //TODO
-        //Изменить этот метод так что-бы он загружал не одного текущего человека из файла,
-        // а весь списочный массив mans
+        number = 0;
+        showMan(number);
     }
 
     public void setMain(Main main){

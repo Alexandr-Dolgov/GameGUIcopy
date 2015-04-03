@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
+import jdk.management.resource.internal.inst.FileOutputStreamRMHooks;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -92,11 +93,16 @@ public class Controller {
         );
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showSaveDialog(main.getPrimaryStage());
-        mans.get(number).save(file.getAbsolutePath());
 
-        //TODO
-        //Изменить этот метод так что-бы он сохранял не одного текущего человека в файл,
-        // а весь списочный массив mans
+        try(FileOutputStream fos = new FileOutputStream(file.getAbsoluteFile());
+            ObjectOutputStream oos = new ObjectOutputStream(fos)
+        ){
+            oos.writeObject(mans);
+        } catch (FileNotFoundException ex){
+            ex.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

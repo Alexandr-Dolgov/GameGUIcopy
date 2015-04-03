@@ -45,35 +45,17 @@ public class Man implements Serializable{
     }
 
     public static Man load (String path) {
-        FileInputStream fis = null;
-        try {
-            fis = new FileInputStream(path);
-        } catch (FileNotFoundException ex) {
-            System.out.println("Файл "+path+"не найден");
-        }
-        ObjectInputStream ois = null;
         Man man = null;
-        try{
-            ois = new ObjectInputStream(fis);
+        try(FileInputStream fis = new FileInputStream(path);
+            ObjectInputStream ois = new ObjectInputStream(fis)
+        ){
             man = (Man) ois.readObject();
-        }catch (ClassNotFoundException ex){
+        } catch (FileNotFoundException ex) {
+            System.out.println("Файл " + path + "не найден");
+        } catch (ClassNotFoundException ex){
             System.out.println("Из фаила находящегося по адресу " + path + " не удалось прочитаь объект типа Man");
         }catch (IOException ex){
             System.out.println("Ошибка чтения из файла" + path);
-        }
-        try {
-            ois.close();
-        } catch (IOException e) {
-            System.out.println("Ошибка закрытия потока ObjectInputStream ois\n" +
-                    "ассоциированного с потоком FileInputStream fis\n" +
-                    "ассоциированного с файлом " + path);
-            e.printStackTrace();
-        }
-        try {
-            fis.close();
-        } catch (IOException e) {
-            System.out.println("Ошибка закрытия потока FileInputStream fis\n" +
-                    "ассоциированного с файлом " + path);
         }
         return man;
     }

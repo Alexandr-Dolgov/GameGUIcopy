@@ -4,7 +4,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
-import jdk.management.resource.internal.inst.FileOutputStreamRMHooks;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -93,6 +92,7 @@ public class Controller {
         );
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showSaveDialog(main.getPrimaryStage());
+        mans.get(number).save(file.getAbsolutePath());
 
         try(FileOutputStream fos = new FileOutputStream(file.getAbsoluteFile());
             ObjectOutputStream oos = new ObjectOutputStream(fos)

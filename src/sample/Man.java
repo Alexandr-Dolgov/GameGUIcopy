@@ -64,16 +64,24 @@ public class Man implements Serializable{
         try{
             ois = new ObjectInputStream(fis);
             man = (Man) ois.readObject();
-            ois.close();
         }catch (ClassNotFoundException ex){
-            System.out.println("Из фаила находящегося по адресу "+path+" не удалось прочитаь объект типа Man");
+            System.out.println("Из фаила находящегося по адресу " + path + " не удалось прочитаь объект типа Man");
         }catch (IOException ex){
-            System.out.println("Ошибка чтения из файла"+path);
+            System.out.println("Ошибка чтения из файла" + path);
+        }
+        try {
+            ois.close();
+        } catch (IOException e) {
+            System.out.println("Ошибка закрытия потока ObjectInputStream ois\n" +
+                    "ассоциированного с потоком FileInputStream fis\n" +
+                    "ассоциированного с файлом " + path);
+            e.printStackTrace();
         }
         try {
             fis.close();
         } catch (IOException e) {
-            System.out.println("Ошибка закрытия fis");
+            System.out.println("Ошибка закрытия потока FileInputStream fis\n" +
+                    "ассоциированного с файлом " + path);
         }
         return man;
     }
